@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\DB;
 
 class TodoController extends Controller
 {
+    private TaskService $taskService;
+
+    public function __construct()
+    {
+        $this->taskService=new TaskService();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,8 +21,7 @@ class TodoController extends Controller
      */
     public function index()
     {
-        $taskService=new TaskService();
-        return $taskService->getTasks();
+        return $this->taskService->getTasks();
     }
 
     /**
@@ -27,8 +32,7 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        $taskService=new TaskService();
-        $isInsertSuccess=$taskService->saveTask($request->json('title'));
+        $isInsertSuccess=$this->taskService->saveTask($request->json('title'));
 
         if ($isInsertSuccess) {
             return 'success';
