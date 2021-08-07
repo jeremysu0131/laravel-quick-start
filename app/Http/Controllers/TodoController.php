@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TodoController extends Controller
 {
@@ -13,7 +14,9 @@ class TodoController extends Controller
      */
     public function index()
     {
-        return 'hello';
+        $todolist = DB::select('select * from tasks');
+
+        return $todolist;
     }
 
     /**
@@ -24,7 +27,14 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $title= $request->json('title');
+        $isInsertSuccess=DB::insert("insert into tasks (title) VALUES (?) ", [$title]);
+
+        if ($isInsertSuccess) {
+            return 'success';
+        } else {
+            return 'fail';
+        }
     }
 
     /**
