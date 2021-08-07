@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\TaskService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,9 +15,8 @@ class TodoController extends Controller
      */
     public function index()
     {
-        $todolist = DB::select('select * from tasks');
-
-        return $todolist;
+        $taskService=new TaskService();
+        return $taskService->getTasks();
     }
 
     /**
@@ -27,8 +27,8 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        $title= $request->json('title');
-        $isInsertSuccess=DB::insert("insert into tasks (title) VALUES (?) ", [$title]);
+        $taskService=new TaskService();
+        $isInsertSuccess=$taskService->saveTask($request->json('title'));
 
         if ($isInsertSuccess) {
             return 'success';
