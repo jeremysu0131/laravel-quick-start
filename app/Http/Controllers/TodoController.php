@@ -3,16 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Services\TaskService;
+use App\Services\Task1Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class TodoController extends Controller
 {
     private TaskService $taskService;
+    private Task1Service $taskService1;
 
-    public function __construct()
-    {
-        $this->taskService=new TaskService();
+    public function __construct(
+        TaskService $taskService,
+        Task1Service $taskService1
+    ) {
+        $this->taskService=$taskService;
+        $this->taskService1=$taskService1;
     }
     /**
      * Display a listing of the resource.
